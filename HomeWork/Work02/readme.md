@@ -179,13 +179,10 @@ Cоздаем карту маршрутов с именем R28, соответ�
 ```
 R28(config-route-map)#route-map R28 permit 10
 R28(config-route-map)#match ip address VLAN 50
-R28(config-route-map)#set ip next-hop verify-availability 20.20.0.233 10 track 1
-R28(config-route-map)#set ip next-hop verify-availability 20.20.0.225 20 track 2
-
+R28(config-route-map)#set ip next-hop 20.20.0.233
 R28(config-route-map)#route-map R28 permit 20
 R28(config-route-map)#match ip address VLAN 60
-R28(config-route-map)#set ip next-hop verify-availability 20.20.0.225 10 track 2
-R28(config-route-map)#set ip next-hop verify-availability 20.20.0.233 20 track 1
+R28(config-route-map)#set ip next-hop 20.20.0.225
 ```
 Применяем карту маршрутов 
 ```
@@ -195,3 +192,11 @@ R28(config-subif)#interface Ethernet0/2.60
 R28(config-subif)#ip policy route-map R28
 ```
 Проводим проверку прохождения сигнала
+VC30
+```
+VPCS>trace 20.20.0.225
+1  192.168.5.1  1.007  ms  
+
+
+```
+
