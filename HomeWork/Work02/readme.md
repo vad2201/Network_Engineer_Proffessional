@@ -168,7 +168,7 @@ L        192.168.100.65/32 is directly connected, Ethernet0/2.100
 Трек 1 (SLA 1), отвечающий за маршрут по умолчанию на R26 отключился, и механизм SLA включил вторичный маршрут на 20.20.0.225
 
 ###  PBR
-На маршрутизаторе R28 создадим стандартный список ACL с именем Lo2-ACL для идентификации трафика VLAN 50 и VLAN 60
+На маршрутизаторе R28 создадим стандартный списки ACL для идентификации трафика VLAN 50 и VLAN 60
 ```
 R28(config)#ip access-list standard VLAN50
 R28(config-std-nacl)#permit 192.168.5.0 0.0.0.255
@@ -177,13 +177,21 @@ R28(config-std-nacl)#permit 192.168.6.0 0.0.0.255
 ```
 Cоздаем карту маршрутов с именем R28, соответствующую спискам доступа, и устанавливаем интерфейсы.
 ```
-R28(config)#route-map R28 permit
-R28(config-route-map)#description Raspredelenie trafika
-R28(config-route-map)#match ip address VLAN50 set ip next-hop 20.20.0.233
-R28(config-route-map)#match ip address VLAN60 set ip next-hop 20.20.0.225
+R28(config-route-map)#route-map R28 permit 10
+R28(config-route-map)#match ip address VLAN 50
+R28(config-route-map)#set ip next-hop verify-availability 20.20.0.233 10 track 1
+R28(config-route-map)#set ip next-hop verify-availability 20.20.0.225 20 track 2
+
+R28(config-route-map)#route-map R28 permit 20
+R28(config-route-map)#match ip address VLAN 60
+R28(config-route-map)#set ip next-hop verify-availability 20.20.0.225 10 track 2
+R28(config-route-map)#set ip next-hop verify-availability 20.20.0.233 20 track 1
 ```
-Применяем карту маршрутов к интерфейсу G0/1 R1
+Применяем карту маршрутов 
 ```
-R28(config)#int e0/2
-R28(config-if)#ip policy route-map R28
+R28(config-if)#interface Ethernet0/2.50
+R28(config-subif)#ip policy route-map R28
+R28(config-subif)#interface Ethernet0/2.60
+R28(config-subif)#ip policy route-map R28
 ```
+Проводим проверку прохождения сигнала
