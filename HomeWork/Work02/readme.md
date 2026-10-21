@@ -191,12 +191,54 @@ R28(config-subif)#ip policy route-map R28
 R28(config-subif)#interface Ethernet0/2.60
 R28(config-subif)#ip policy route-map R28
 ```
+Для того чтобы пинговать интерфейсы R25 и R26 с компьютеров, использующих разные маршруты по умолчанию необходимо настроить маршрутизацию между R25 и R26
+```
+R25(config)#ip route 20.20.0.232 255.255.255.252 20.20.0.222
+R26(config)#ip route 20.20.0.224 255.255.255.252 20.20.0.221
+```
+
 Проводим проверку прохождения сигнала
+
 VC30
 ```
-VPCS>trace 20.20.0.225
-1  192.168.5.1  1.007  ms  
+VPCS> trace 20.20.0.225
+trace to 20.20.0.225, 8 hops max, press Ctrl+C to stop
+ 1   192.168.5.1   1.949 ms  1.304 ms  1.125 ms
+ 2   20.20.0.233   0.992 ms  0.554 ms  0.538 ms
+ 3   *20.20.0.221   1.334 ms (ICMP type:3, code:3, Destination port unreachable)  *
 
+VPCS> ping 20.20.0.225
 
+84 bytes from 20.20.0.225 icmp_seq=1 ttl=254 time=1.722 ms
+84 bytes from 20.20.0.225 icmp_seq=2 ttl=254 time=1.642 ms
+84 bytes from 20.20.0.225 icmp_seq=3 ttl=254 time=1.760 ms
+84 bytes from 20.20.0.225 icmp_seq=4 ttl=254 time=1.500 ms
+84 bytes from 20.20.0.225 icmp_seq=5 ttl=254 time=0.981 ms
 ```
 
+Весь трафик VC30 идет 
+
+VC31
+
+```
+VPCS> trace 20.20.0.233
+trace to 20.20.0.233, 8 hops max, press Ctrl+C to stop
+ 1   192.168.6.1   0.724 ms  0.824 ms  1.960 ms
+ 2   20.20.0.225   0.644 ms  0.649 ms  0.507 ms
+ 3   *20.20.0.222   1.490 ms (ICMP type:3, code:3, Destination port unreachable)  *
+
+VPCS> ping 20.20.0.233
+
+84 bytes from 20.20.0.233 icmp_seq=1 ttl=254 time=1.613 ms
+84 bytes from 20.20.0.233 icmp_seq=2 ttl=254 time=1.519 ms
+84 bytes from 20.20.0.233 icmp_seq=3 ttl=254 time=0.628 ms
+84 bytes from 20.20.0.233 icmp_seq=4 ttl=254 time=1.196 ms
+84 bytes from 20.20.0.233 icmp_seq=5 ttl=254 time=2.037 ms
+```
+Весь трафик VC31 идет через R25
+
+
+###  Настроим маршрут по умолчанию в Лабытнанги
+```
+R27(config)#ip route 0.0.0.0 0.0.0.0 20.20.0.229
+```
