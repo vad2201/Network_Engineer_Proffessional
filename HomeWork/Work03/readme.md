@@ -34,7 +34,7 @@ R19(config)#router ospf 1
 R19(config-router)#router-id 19.19.19.19
 R19(config-router)#area 101 stub no-summary
 R19(config-if)#interface loopback 0
-R19(config-if)##ip ospf 1 area 101
+R19(config-if)#ip ospf 1 area 101
 R19(config-router)#interface e0/0
 R19(config-if)#ip ospf 1 area 101
 ```
@@ -42,7 +42,9 @@ R19(config-if)#ip ospf 1 area 101
 ```
 R20(config)#router ospf 1
 R20(config-router)#router-id 20.20.20.20
-R20(config-router)#interface e0/0
+R19(config-router)#interface loopback 0
+R19(config-if)#ip ospf 1 area 102
+R20(config-if)#interface e0/0
 R20(config-if)#ip ospf 1 area 102
 ```
 
@@ -53,14 +55,30 @@ R20(config-if)#ip ospf 1 area 102
 R12(config)#router ospf 1
 R12(config-router)#router-id 12.12.12.12
 R12(config-router)#area 10 stub
-R12(config-if-range)#interface range e0/2-3
+R12(config)#interface loopback 0
+R12(config-if)#ip ospf 1 area 10
+R12(config)#interface range e0/2-3
 R12(config-if-range)#ip ospf 1 area 10
+R12(config)#interface Ethernet0/0.10
+R12(config-if)#ip ospf 1 area 10
+R12(config)#interface Ethernet0/0.20
+R12(config-if)#ip ospf 1 area 10
+R12(config-if)#interface Ethernet0/1.100
+R12(config-if)#ip ospf 1 area 10
 
 R13(config)#router ospf 1
 R13(config-router)#router-id 13.13.13.13
 R13(config-router)#area 10 stub
-R13(config-router)#interface range e0/2-3
+R13(config)#interface loopback 0
+R13(config-if)#ip ospf 1 area 10
+R13(config-if)#interface range e0/2-3
 R13(config-if-range)#ip ospf 1 area 10
+R12(config)#interface Ethernet0/0.10
+R12(config-if)#ip ospf 1 area 10
+R12(config)#interface Ethernet0/0.20
+R12(config-if)#ip ospf 1 area 10
+R12(config-if)#interface Ethernet0/1.100
+R12(config-if)#ip ospf 1 area 10
 ```
 
 Так как интерфейс e0/3 маршрутизатора R14 находится в зоне 101, а интерфейсы e0/0 и e0/1 в зоне 10
@@ -72,7 +90,7 @@ R14(config-if-range)#ip ospf 1 area 10
 R14(config)#interface e0/3
 R14(config-if)#ip ospf 1 area 101
 ```
-Так как интерфейс e0/3 маршрутизатора R14 находится в зоне 102, а интерфейсы e0/0 и e0/1 в зоне 10
+Так как интерфейс e0/3 маршрутизатора R15 находится в зоне 102, а интерфейсы e0/0 и e0/1 в зоне 10
 ```
 R15(config)#router ospf 1
 R15(config-router)#area 10 stub
