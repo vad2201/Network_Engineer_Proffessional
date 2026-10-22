@@ -96,6 +96,6 @@ R15(config)#router ospf 1
 R15(config-router)#area 10 stub
 R15(config-router)#interface range e0/0-1
 R15(config-if-range)#ip ospf 1 area 10
-R15(config-router)#interface e0/3
+R15(config)#interface e0/3
 R15(config-if)#ip ospf 1 area 102
 ```
