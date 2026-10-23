@@ -38,6 +38,7 @@ R19(config-if)#ip ospf 1 area 101
 R19(config-router)#interface e0/0
 R19(config-if)#ip ospf 1 area 101
 ```
+
 Так как маршрутизатор R20 находится в зоне 102 и получает все маршруты, кроме маршрутов до сетей зоны 101, значит зона 102 - normal.
 ```
 R20(config)#router ospf 1
@@ -47,9 +48,6 @@ R19(config-if)#ip ospf 1 area 102
 R20(config-if)#interface e0/0
 R20(config-if)#ip ospf 1 area 102
 ```
-
-
-
 Так как маршрутизаторы R12-R13 находятся в зоне 10 и дополнительно к маршрутам должны получать маршрут по умолчанию, значит зона 10 - stub.
 ```
 R12(config)#router ospf 1
@@ -98,4 +96,62 @@ R15(config-router)#interface range e0/0-1
 R15(config-if-range)#ip ospf 1 area 10
 R15(config)#interface e0/3
 R15(config-if)#ip ospf 1 area 102
+```
+
+####  Настраиваем фильтрацию в зоне 102
+
+Создаем prefix-list.
+Так как фильтроваться трафик должен в зоне 102, фильтрацию проводим на маршрутизаторе R15
+```
+R15(config)#ip prefix-list 101_in seq 10 deny 20.20.0.4/30
+R15(config)#ip prefix-list 101_in seq 20 deny 192.168.0.12/32
+R15(config)#ip prefix-list 101_in seq 30 permit 0.0.0.0/0 le 32
+```
+
+Проверяем таблицу маршрутизации и доступ с R19 на R20 до применения prefix-list
+```
+R20#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 20.20.0.26 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 20.20.0.26
+      20.0.0.0/8 is variably subnetted, 7 subnets, 3 masks
+O IA     20.20.0.8/30 [110/30] via 20.20.0.26, 23:44:49, Ethernet0/0
+O IA     20.20.0.12/30 [110/20] via 20.20.0.26, 23:45:12, Ethernet0/0
+O IA     20.20.0.16/30 [110/30] via 20.20.0.26, 23:45:12, Ethernet0/0
+O IA     20.20.0.20/30 [110/20] via 20.20.0.26, 23:45:12, Ethernet0/0
+C        20.20.0.24/30 is directly connected, Ethernet0/0
+L        20.20.0.25/32 is directly connected, Ethernet0/0
+O IA     20.20.0.136/29 [110/20] via 20.20.0.26, 23:45:12, Ethernet0/0
+      192.168.0.0/24 is variably subnetted, 5 subnets, 2 masks
+C        192.168.0.0/27 is directly connected, Loopback0
+O IA     192.168.0.2/32 [110/11] via 20.20.0.26, 23:45:12, Ethernet0/0
+O IA     192.168.0.4/32 [110/21] via 20.20.0.26, 22:14:30, Ethernet0/0
+O IA     192.168.0.5/32 [110/21] via 20.20.0.26, 22:05:59, Ethernet0/0
+L        192.168.0.6/32 is directly connected, Loopback0
+O IA  192.168.1.0/24 [110/30] via 20.20.0.26, 22:14:00, Ethernet0/0
+O IA  192.168.2.0/24 [110/30] via 20.20.0.26, 22:13:44, Ethernet0/0
+      192.168.100.0/24 is variably subnetted, 2 subnets, 2 masks
+O IA     192.168.100.0/24 [110/30] via 20.20.0.26, 22:04:58, Ethernet0/0
+O IA     192.168.100.0/27 [110/30] via 20.20.0.26, 22:13:21, Ethernet0/0
+
+R19#ping 20.20.0.25
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 20.20.0.25, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/2 ms
+```
+Применяем фильтр на R15
+```
+R15(config)#router ospf 1
+R15(config-router)#area 102 filter-list prefix 101_in in
 ```
