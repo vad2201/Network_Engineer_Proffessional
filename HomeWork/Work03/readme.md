@@ -149,11 +149,87 @@ O IA     192.168.100.0/27 [110/30] via 20.20.0.26, 00:00:40, Ethernet0/0
 не появляется на R20, так  как подсеть 0.4 подключена к R14 напрямую, а между R14 и R15 нет синхонизации зоны 0.
 Пришлось добавлять интерфейсы на маршрутизаторы R14 и R15 и связывать их напрямую в зоне 0.
 
+Проверяем маршрутизацию после связи зоны 0
+```
+R20#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
 
+Gateway of last resort is not set
 
+      20.0.0.0/8 is variably subnetted, 10 subnets, 3 masks
+O IA     20.20.0.4/30 [110/30] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     20.20.0.8/30 [110/30] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     20.20.0.12/30 [110/20] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     20.20.0.16/30 [110/30] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     20.20.0.20/30 [110/20] via 20.20.0.26, 00:20:03, Ethernet0/0
+C        20.20.0.24/30 is directly connected, Ethernet0/0
+L        20.20.0.25/32 is directly connected, Ethernet0/0
+O IA     20.20.0.128/30 [110/30] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     20.20.0.136/29 [110/20] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     20.20.0.240/30 [110/20] via 20.20.0.26, 00:20:03, Ethernet0/0
+      192.168.0.0/24 is variably subnetted, 7 subnets, 2 masks
+C        192.168.0.0/27 is directly connected, Loopback0
+O IA     192.168.0.2/32 [110/11] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     192.168.0.3/32 [110/21] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     192.168.0.4/32 [110/21] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     192.168.0.5/32 [110/21] via 20.20.0.26, 00:20:03, Ethernet0/0
+L        192.168.0.6/32 is directly connected, Loopback0
+O IA     192.168.0.12/32 [110/31] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA  192.168.1.0/24 [110/30] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA  192.168.2.0/24 [110/30] via 20.20.0.26, 00:20:03, Ethernet0/0
+      192.168.100.0/24 is variably subnetted, 2 subnets, 2 masks
+O IA     192.168.100.0/24 [110/30] via 20.20.0.26, 00:20:03, Ethernet0/0
+O IA     192.168.100.0/27 [110/30] via 20.20.0.26, 00:20:03, Ethernet0/0
+```
+Маршруты до R19 появились на R20.
 
-Применяем фильтр на R15
+Применяем фильтр на R15 для ограничения доступа к R19
 ```
 R15(config)#router ospf 1
-R15(config-router)#area 102 filter-list prefix 101_in in
+R15(config-router)#area 102 filter-list prefix 101deny in
+
+R20#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      20.0.0.0/8 is variably subnetted, 9 subnets, 3 masks
+O IA     20.20.0.8/30 [110/30] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA     20.20.0.12/30 [110/20] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA     20.20.0.16/30 [110/30] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA     20.20.0.20/30 [110/20] via 20.20.0.26, 00:00:10, Ethernet0/0
+C        20.20.0.24/30 is directly connected, Ethernet0/0
+L        20.20.0.25/32 is directly connected, Ethernet0/0
+O IA     20.20.0.128/30 [110/30] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA     20.20.0.136/29 [110/20] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA     20.20.0.240/30 [110/20] via 20.20.0.26, 00:00:10, Ethernet0/0
+      192.168.0.0/24 is variably subnetted, 6 subnets, 2 masks
+C        192.168.0.0/27 is directly connected, Loopback0
+O IA     192.168.0.2/32 [110/11] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA     192.168.0.3/32 [110/21] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA     192.168.0.4/32 [110/21] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA     192.168.0.5/32 [110/21] via 20.20.0.26, 00:00:10, Ethernet0/0
+L        192.168.0.6/32 is directly connected, Loopback0
+O IA  192.168.1.0/24 [110/30] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA  192.168.2.0/24 [110/30] via 20.20.0.26, 00:00:10, Ethernet0/0
+      192.168.100.0/24 is variably subnetted, 2 subnets, 2 masks
+O IA     192.168.100.0/24 [110/30] via 20.20.0.26, 00:00:10, Ethernet0/0
+O IA     192.168.100.0/27 [110/30] via 20.20.0.26, 00:00:10, Ethernet0/0
 ```
+####  Маршруты до 20.20.0.4/30 и 192.168.0.12/32 пропали из таблицы маршрутизации.
