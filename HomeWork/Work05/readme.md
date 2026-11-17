@@ -207,7 +207,7 @@ D     192.168.100.0/24 [90/307200] via 20.20.0.38, 00:27:07, Ethernet0/0
                        [90/307200] via 20.20.0.34, 00:27:07, Ethernet0/1
 ```
 
-####  R17
+####  R32
 ```
 R32#show ip eigrp neighbors
 EIGRP-IPv4 Neighbors for AS(1)
