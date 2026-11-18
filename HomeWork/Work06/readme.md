@@ -11,3 +11,22 @@
   5. Организуете IP доступность между пограничным роутерами офисами Москва и С.-Петербург.
 
 ![Схема лабораторной работы](СхемаДЗ.png)
+
+####  1. Настроите eBGP между офисом Москва и двумя провайдерами - Киторн и Ламас.
+Настройка на R14
+```
+router bgp 1001
+R14(config)#bgp router-id 192.168.0.3
+R14(config)#network 20.20.0.129
+R14(config)#network 192.168.0.3
+R14(config)#neighbor 20.20.0.129 remote-as 101
+```
+Настройка на R15
+```
+R15(config)#router bgp 1001
+R15(config-router)#bgp router-id 192.168.0.2
+R15(config-router)#network 192.168.0.2
+R15(config-router)#network 20.20.0.137
+R15(config-router)#Neighbor 20.20.0.137 remote-as 301
+```
+
