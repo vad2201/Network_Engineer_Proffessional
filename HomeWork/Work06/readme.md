@@ -348,5 +348,15 @@ Type escape sequence to abort.
 Sending 5, 100-byte ICMP Echos to 20.20.0.214, timeout is 2 seconds:
 !!!!!
 Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
-
+R14#ping 20.20.0.238
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 20.20.0.238, timeout is 2 seconds:
+.....
+Success rate is 0 percent (0/5)
+R15#ping 20.20.0.238
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 20.20.0.238, timeout is 2 seconds:
+.....
+Success rate is 0 percent (0/5)
 ```
+Интерфейс e0/3 маршрутизатора R18 не доступен со стороны Москвы, так как маршрутизатор R26 находится внутри области AS520 и iBGP не настроен.
