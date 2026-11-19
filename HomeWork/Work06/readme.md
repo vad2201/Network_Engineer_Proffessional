@@ -107,3 +107,232 @@ R26(config-router)#network 20.20.0.236 mask 255.255.255.252
 R26(config-router)#neighbor 20.20.0.238 remote-as 2042
 *Nov 19 08:53:48.476: %BGP-5-ADJCHANGE: neighbor 20.20.0.238 Up
 ```
+####  Проверка eBGP в Москве
+Настройка на R14
+```
+R14#show ip bgp
+BGP table version is 22, local router ID is 192.168.0.3
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.4/30     0.0.0.0                  0         32768 i
+ *>  20.20.0.8/30     0.0.0.0                  0         32768 i
+ *>  20.20.0.16/30    0.0.0.0                  0         32768 i
+ *>  20.20.0.32/30    20.20.0.129                            0 101 301 520 2042 i
+ *>  20.20.0.36/30    20.20.0.129                            0 101 301 520 2042 i
+ r>  20.20.0.128/30   20.20.0.129              0             0 101 i
+ *>  20.20.0.132/30   20.20.0.129              0             0 101 i
+ *>  20.20.0.136/29   20.20.0.129                            0 101 301 i
+ *>  20.20.0.196/30   20.20.0.129                            0 101 520 i
+ *>  20.20.0.200/30   20.20.0.129                            0 101 520 i
+ *>  20.20.0.204/30   20.20.0.129                            0 101 520 i
+ *>  20.20.0.208/30   20.20.0.129                            0 101 301 520 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.212/30   20.20.0.129                            0 101 301 520 i
+ *>  20.20.0.216/30   20.20.0.129                            0 101 301 520 i
+ *>  20.20.0.240/30   0.0.0.0                  0         32768 i
+```
+Настройка на R15
+```
+R15#show ip bgp
+BGP table version is 17, local router ID is 192.168.0.2
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.12/30    0.0.0.0                  0         32768 i
+ *>  20.20.0.20/30    0.0.0.0                  0         32768 i
+ *>  20.20.0.24/30    0.0.0.0                  0         32768 i
+ *>  20.20.0.32/30    20.20.0.137                            0 301 520 2042 i
+ *>  20.20.0.36/30    20.20.0.137                            0 301 520 2042 i
+ *>  20.20.0.128/30   20.20.0.137                            0 301 101 i
+ *>  20.20.0.132/30   20.20.0.137                            0 301 101 i
+ r>  20.20.0.136/29   20.20.0.137              0             0 301 i
+ *>  20.20.0.196/30   20.20.0.137                            0 301 101 520 i
+ *>  20.20.0.200/30   20.20.0.137                            0 301 520 i
+ *>  20.20.0.204/30   20.20.0.137                            0 301 101 520 i
+ *>  20.20.0.208/30   20.20.0.137                            0 301 520 i
+ *>  20.20.0.212/30   20.20.0.137                            0 301 520 i
+ *>  20.20.0.216/30   20.20.0.137                            0 301 520 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.240/30   0.0.0.0                  0         32768 i
+```
+####  Проверка eBGP в Киторне на R22
+```
+R22#show ip bgp
+BGP table version is 25, local router ID is 192.168.0.129
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.4/30     20.20.0.130              0             0 1001 i
+ *>  20.20.0.8/30     20.20.0.130              0             0 1001 i
+ *>  20.20.0.12/30    20.20.0.134                            0 301 1001 i
+ *>  20.20.0.16/30    20.20.0.130              0             0 1001 i
+ *>  20.20.0.20/30    20.20.0.134                            0 301 1001 i
+ *>  20.20.0.24/30    20.20.0.134                            0 301 1001 i
+ *>  20.20.0.32/30    20.20.0.134                            0 301 520 2042 i
+ *>  20.20.0.36/30    20.20.0.134                            0 301 520 2042 i
+ *>  20.20.0.128/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.132/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.136/29   20.20.0.134              0             0 301 i
+ r>  20.20.0.196/30   20.20.0.197              0             0 520 i
+ *   20.20.0.200/30   20.20.0.134                            0 301 520 i
+ *>                   20.20.0.197              0             0 520 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.204/30   20.20.0.197              0             0 520 i
+ *>  20.20.0.208/30   20.20.0.134                            0 301 520 i
+ *>  20.20.0.212/30   20.20.0.134                            0 301 520 i
+ *>  20.20.0.216/30   20.20.0.134                            0 301 520 i
+ *   20.20.0.240/30   20.20.0.134                            0 301 1001 i
+ *>                   20.20.0.130              0             0 1001 i
+```
+####  Проверка eBGP в Ламасе на R21
+```
+R21#show ip bgp
+BGP table version is 27, local router ID is 192.168.0.137
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.4/30     20.20.0.133                            0 101 1001 i
+ *>  20.20.0.8/30     20.20.0.133                            0 101 1001 i
+ *>  20.20.0.12/30    20.20.0.138              0             0 1001 i
+ *>  20.20.0.16/30    20.20.0.133                            0 101 1001 i
+ *>  20.20.0.20/30    20.20.0.138              0             0 1001 i
+ *>  20.20.0.24/30    20.20.0.138              0             0 1001 i
+ *>  20.20.0.32/30    20.20.0.209                            0 520 2042 i
+ *>  20.20.0.36/30    20.20.0.209                            0 520 2042 i
+ *>  20.20.0.128/30   20.20.0.133              0             0 101 i
+ r>  20.20.0.132/30   20.20.0.133              0             0 101 i
+ *>  20.20.0.136/29   0.0.0.0                  0         32768 i
+ *>  20.20.0.196/30   20.20.0.133                            0 101 520 i
+ *>  20.20.0.200/30   20.20.0.209              0             0 520 i
+ *                    20.20.0.133                            0 101 520 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.204/30   20.20.0.133                            0 101 520 i
+ r>  20.20.0.208/30   20.20.0.209              0             0 520 i
+ *>  20.20.0.212/30   20.20.0.209              0             0 520 i
+ *>  20.20.0.216/30   20.20.0.209              0             0 520 i
+ *>  20.20.0.240/30   20.20.0.138              0             0 1001 i
+ *                    20.20.0.133                            0 101 1001 i
+```
+####  Проверка eBGP в Санкт-Петербурге на R18
+```
+R18#show ip bgp
+BGP table version is 27, local router ID is 192.168.0.30
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.4/30     20.20.0.213                            0 520 301 101 1001 i
+ *>  20.20.0.8/30     20.20.0.213                            0 520 301 101 1001 i
+ *>  20.20.0.12/30    20.20.0.213                            0 520 301 1001 i
+ *>  20.20.0.16/30    20.20.0.213                            0 520 301 101 1001 i
+ *>  20.20.0.20/30    20.20.0.213                            0 520 301 1001 i
+ *>  20.20.0.24/30    20.20.0.213                            0 520 301 1001 i
+ *>  20.20.0.32/30    0.0.0.0                  0         32768 i
+ *>  20.20.0.36/30    0.0.0.0                  0         32768 i
+ *>  20.20.0.128/30   20.20.0.213                            0 520 301 101 i
+ *>  20.20.0.132/30   20.20.0.213                            0 520 301 101 i
+ *>  20.20.0.136/29   20.20.0.213                            0 520 301 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.200/30   20.20.0.213              0             0 520 i
+ *>  20.20.0.208/30   20.20.0.213              0             0 520 i
+ r>  20.20.0.212/30   20.20.0.213              0             0 520 i
+ *   20.20.0.216/30   20.20.0.237              0             0 520 i
+ *>                   20.20.0.213              0             0 520 i
+ *>  20.20.0.220/30   20.20.0.237              0             0 520 i
+ *>  20.20.0.232/30   20.20.0.237              0             0 520 i
+ r>  20.20.0.236/30   20.20.0.237              0             0 520 i
+ *>  20.20.0.240/30   20.20.0.213                            0 520 301 1001 i
+```
+####  Проверка eBGP в Триаде
+Проверка на R23
+```
+R23#show ip bgp
+BGP table version is 20, local router ID is 192.168.0.97
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.4/30     20.20.0.198                            0 101 1001 i
+ *>  20.20.0.8/30     20.20.0.198                            0 101 1001 i
+ *>  20.20.0.12/30    20.20.0.198                            0 101 301 1001 i
+ *>  20.20.0.16/30    20.20.0.198                            0 101 1001 i
+ *>  20.20.0.20/30    20.20.0.198                            0 101 301 1001 i
+ *>  20.20.0.24/30    20.20.0.198                            0 101 301 1001 i
+ *>  20.20.0.128/30   20.20.0.198              0             0 101 i
+ *>  20.20.0.132/30   20.20.0.198              0             0 101 i
+ *>  20.20.0.136/29   20.20.0.198                            0 101 301 i
+ *>  20.20.0.196/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.200/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.204/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.240/30   20.20.0.198                            0 101 1001 i
+```
+Проверка на R24
+```
+R24#show ip bgp
+BGP table version is 24, local router ID is 192.168.0.99
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.4/30     20.20.0.210                            0 301 101 1001 i
+ *>  20.20.0.8/30     20.20.0.210                            0 301 101 1001 i
+ *>  20.20.0.12/30    20.20.0.210                            0 301 1001 i
+ *>  20.20.0.16/30    20.20.0.210                            0 301 101 1001 i
+ *>  20.20.0.20/30    20.20.0.210                            0 301 1001 i
+ *>  20.20.0.24/30    20.20.0.210                            0 301 1001 i
+ *>  20.20.0.32/30    20.20.0.214              0             0 2042 i
+ *>  20.20.0.36/30    20.20.0.214              0             0 2042 i
+ *>  20.20.0.128/30   20.20.0.210                            0 301 101 i
+ *>  20.20.0.132/30   20.20.0.210                            0 301 101 i
+ *>  20.20.0.136/29   20.20.0.210              0             0 301 i
+ *>  20.20.0.200/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.208/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.212/30   0.0.0.0                  0         32768 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.216/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.240/30   20.20.0.210                            0 301 1001 i
+```
+Проверка на R26
+```
+R26#show ip bgp
+BGP table version is 7, local router ID is 192.168.0.100
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  20.20.0.32/30    20.20.0.238              0             0 2042 i
+ *>  20.20.0.36/30    20.20.0.238              0             0 2042 i
+ *>  20.20.0.216/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.220/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.232/30   0.0.0.0                  0         32768 i
+ *>  20.20.0.236/30   0.0.0.0                  0         32768 i
+```
