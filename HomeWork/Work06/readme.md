@@ -17,27 +17,31 @@
 ```
 router bgp 1001
 R14(config)#bgp router-id 192.168.0.3
-R14(config)#network 20.20.0.129
-R14(config)#network 192.168.0.3
+R14(config-router)#network 20.20.0.0 mask 255.255.255.224
+R14(config-router)#network 20.20.0.4 mask 255.255.255.252
+R14(config-router)#network 20.20.0.8 mask 255.255.255.252
+R14(config-router)#network 20.20.0.16 mask 255.255.255.252
+R14(config-router)#network 20.20.0.240 mask 255.255.255.252
 R14(config)#neighbor 20.20.0.129 remote-as 101
 ```
 Настройка на R15
 ```
 R15(config)#router bgp 1001
 R15(config-router)#bgp router-id 192.168.0.2
-R15(config-router)#network 192.168.0.2
-R15(config-router)#network 20.20.0.137
+R15(config-router)#network 20.20.0.0 mask 255.255.255.224
+R15(config-router)#network 20.20.0.12 mask 255.255.255.252
+R15(config-router)#network 20.20.0.20 mask 255.255.255.252
+R15(config-router)#network 20.20.0.24 mask 255.255.255.252
+R15(config-router)#network 20.20.0.240 mask 255.255.255.252
 R15(config-router)#Neighbor 20.20.0.137 remote-as 301
 ```
 ####  Настройка в Киторне на R22
 ```
 R22(config)#router bgp 101
 R22(config-router)#bgp router-id 192.168.0.129
-R22(config-router)#network 20.20.0.130
-R22(config-router)#network 192.168.0.129
-R22(config-router)#network 20.20.0.134
-R22(config-router)#network 20.20.0.197
-R22(config-router)#neighbor 20.20.0.130 remote-as 1001
+R22(config-router)#network 20.20.0.128 mask 255.255.255.248
+R22(config-router)#network 20.20.0.128 mask 255.255.255.252
+R22(config-router)#network 20.20.0.132 mask 255.255.255.252
 R22(config-router)#neighbor 20.20.0.130 remote-as 1001
 *Nov 18 15:56:19.825: %BGP-5-ADJCHANGE: neighbor 20.20.0.130 Up
 R22(config-router)#neighbor 20.20.0.134 remote-as 301
@@ -47,10 +51,7 @@ R22(config-router)#neighbor 20.20.0.197 remote-as 520
 ```
 R21(config)#router bgp 301
 R21(config-router)#bgp router-id 192.168.0.137
-R21(config-router)#network 20.20.0.133
-R21(config-router)#network 20.20.0.138
-R21(config-router)#network 20.20.0.209
-R21(config-router)#network 192.168.0.137
+R21(config-router)#network 20.20.0.136 mask 255.255.255.248
 R21(config-router)#neighbor 20.20.0.133 remote-as 101
 *Nov 18 16:02:25.089: %BGP-5-ADJCHANGE: neighbor 20.20.0.133 Up
 R21(config-router)#neighbor 20.20.0.138 remote-as 1001
@@ -61,9 +62,10 @@ R21(config-router)#neighbor 20.20.0.209 remote-as 520
 ```
 R18(config)#router bgp 2042
 R18(config-router)#bgp router-id 192.168.0.30
-R18(config-router)#network 20.20.0.213
-R18(config-router)#network 20.20.0.237
-R18(config-router)#network 192.168.0.39
+R18(config-router)#network 20.20.0.32 mask 255.255.255.224
+R18(config-router)#network 20.20.0.32 mask 255.255.255.252
+R18(config-router)#network 20.20.0.36 mask 255.255.255.252
+R18(config-router)#network 20.20.0.40 mask 255.255.255.252
 R18(config-router)#neighbor 20.20.0.213 remote-as 520
 R18(config-router)#neighbor 20.20.0.237 remote-as 520
 ```
@@ -72,8 +74,10 @@ R18(config-router)#neighbor 20.20.0.237 remote-as 520
 ```
 R23(config)#router bgp 520
 R23(config-router)#bgp router-id 192.168.0.97
-R23(config-router)#network 192.168.0.97
-R23(config-router)#network 20.20.0.198
+R23(config-router)#network 20.20.0.192 mask 255.255.255.192
+R23(config-router)#network 20.20.0.196 mask 255.255.255.252
+R23(config-router)#network 20.20.0.200 mask 255.255.255.252
+R23(config-router)#network 20.20.0.204 mask 255.255.255.252
 R23(config-router)#neighbor 20.20.0.198 remote-as 101
 *Nov 19 08:42:29.064: %BGP-5-ADJCHANGE: neighbor 20.20.0.198 Up
 ```
@@ -81,9 +85,11 @@ R23(config-router)#neighbor 20.20.0.198 remote-as 101
 ```
 R24(config)#router bgp 520
 R24(config-router)#bgp router-id 192.168.0.99
-R24(config-router)#network 192.168.0.99
-R24(config-router)#network 20.20.0.210
-R24(config-router)#network 20.20.0.214
+R24(config-router)#network 20.20.0.192 mask 255.255.255.192
+R24(config-router)#network 20.20.0.200 mask 255.255.255.252
+R24(config-router)#network 20.20.0.208 mask 255.255.255.252
+R24(config-router)#network 20.20.0.212 mask 255.255.255.252
+R24(config-router)#network 20.20.0.216 mask 255.255.255.252
 R24(config-router)#neighbor 20.20.0.210 remote-as 301
 *Nov 19 08:49:07.898: %BGP-5-ADJCHANGE: neighbor 20.20.0.210 Up
 R24(config-router)#neighbor 20.20.0.214 remote-as 2042
@@ -93,8 +99,11 @@ R24(config-router)#neighbor 20.20.0.214 remote-as 2042
 ```
 R26(config)#router bgp 520
 R26(config-router)#bgp router-id 192.168.0.100
-R26(config-router)#network 192.168.0.100
-R26(config-router)#network 20.20.0.238
+R26(config-router)#network 20.20.0.192 mask 255.255.255.192
+R26(config-router)#network 20.20.0.216 mask 255.255.255.252
+R26(config-router)#network 20.20.0.220 mask 255.255.255.252
+R26(config-router)#network 20.20.0.232 mask 255.255.255.252
+R26(config-router)#network 20.20.0.236 mask 255.255.255.252
 R26(config-router)#neighbor 20.20.0.238 remote-as 2042
 *Nov 19 08:53:48.476: %BGP-5-ADJCHANGE: neighbor 20.20.0.238 Up
 ```
