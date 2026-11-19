@@ -336,3 +336,17 @@ RPKI validation codes: V valid, I invalid, N Not found
  *>  20.20.0.232/30   0.0.0.0                  0         32768 i
  *>  20.20.0.236/30   0.0.0.0                  0         32768 i
 ```
+####  Проверка IP доступности между пограничным роутерами офисами Москва и С.-Петербург.IP связи
+```
+R14#ping 20.20.0.214
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 20.20.0.214, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+R15#ping 20.20.0.214
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 20.20.0.214, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+```
